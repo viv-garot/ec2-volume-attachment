@@ -23,14 +23,14 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_security_group" "instance" {
-    name = "vivien-SingleWS-aws1"
+  name = "vivien-SingleWS-aws1"
 
-    ingress {
-      cidr_blocks = [ "0.0.0.0/0" ]
-      from_port = 22
-      protocol = "tcp"
-      to_port = 22
-    }
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 22
+    protocol    = "tcp"
+    to_port     = 22
+  }
 }
 
 resource "aws_volume_attachment" "ebs_att" {
@@ -40,11 +40,11 @@ resource "aws_volume_attachment" "ebs_att" {
 }
 
 resource "aws_instance" "ubuntu" {
-  ami               = data.aws_ami.ubuntu.id
-  availability_zone = "eu-central-1a"
-  instance_type     = "t2.micro"
-  key_name = "vivien"
-  vpc_security_group_ids = [ aws_security_group.instance.id ]
+  ami                    = data.aws_ami.ubuntu.id
+  availability_zone      = "eu-central-1a"
+  instance_type          = "t2.micro"
+  key_name               = "vivien"
+  vpc_security_group_ids = [aws_security_group.instance.id]
 
   tags = {
     Name = "vivien-ebs-attach"
@@ -55,3 +55,9 @@ resource "aws_ebs_volume" "example" {
   availability_zone = "eu-central-1a"
   size              = 2
 }
+
+output "instance_public_dns" {
+  value = aws_instance.ubuntu.public_dns
+}
+
+
